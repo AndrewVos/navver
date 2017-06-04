@@ -1,5 +1,3 @@
-/* globals $ */
-
 class KeyboardNavver {
   constructor () {
     this.tags = []
@@ -56,15 +54,15 @@ class KeyboardNavver {
   createTags () {
     var labelGenerator = new LabelGenerator()
 
-    var elements = this.findElements()
+    var elements = this.findClickableElements()
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i]
       this.tags.push(new Tag(labelGenerator.next(), element))
     }
   }
 
-  findElements () {
-    var elements = $('a, button')
+  findClickableElements () {
+    var elements = this.findElements('a', 'button')
     var visibleElements = []
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i]
@@ -75,14 +73,26 @@ class KeyboardNavver {
     return visibleElements
   }
 
+  findElements () {
+    var elements = []
+    for (var i = 0; i < arguments.length; i++) {
+      elements = elements.concat(
+        Array.prototype.slice.call(document.getElementsByTagName(arguments[i]))
+      )
+    }
+    return elements
+  }
+
   isScrolledIntoView (element) {
-    var docViewTop = $(window).scrollTop()
-    var docViewBottom = docViewTop + window.innerHeight
+    var viewportTop = document.body.scrollTop
+    var viewportBottom = viewportTop + window.innerHeight
 
-    var top = $(element).offset().top
-    var bottom = top + $(element).height()
+    var elementRectangle = element.getBoundingClientRect()
+    var top = elementRectangle.top + document.body.scrollTop
+    var height = element.clientHeight
+    var bottom = top + height
 
-    return ((bottom <= docViewBottom) && (top >= docViewTop))
+    return ((bottom <= viewportBottom) && (top >= viewportTop))
   }
 }
 
@@ -94,7 +104,7 @@ class Tag {
   }
 
   remove () {
-    this.$tag.remove()
+    this.tag.remove()
   }
 
   click () {
@@ -103,23 +113,31 @@ class Tag {
 
   highlight (search) {
     if (search === this.label) {
-      this.$tag.html('<strong>' + this.label + '</strong>')
+      this.tag.innerHTML = '<strong>' + this.label + '</strong>'
     } else if (search === this.label[0]) {
-      this.$tag.html('<strong>' + this.label[0] + '</strong>' + this.label[1])
+      this.tag.innerHTML = '<strong>' + this.label[0] + '</strong>' + this.label[1]
     }
   }
 
   build () {
-    this.$tag = $('<div class="navver-tag">' + this.label + '</div>')
-    this.$tag
-      .css('position', 'absolute')
-      .css('top', $(this.element).offset().top)
-      .css('left', $(this.element).offset().left)
-      .css('background', 'yellow')
-      .css('border', '1px solid #333')
-      .css('border-radius', '3px')
-      .css('z-index', 10000000000)
-    $('body').append(this.$tag)
+    this.tag = document.createElement('div')
+
+    var elementRectangle = this.element.getBoundingClientRect()
+    var elementOffset = {
+      top: elementRectangle.top + document.body.scrollTop,
+      left: elementRectangle.left + document.body.scrollLeft
+    }
+
+    this.tag.classList.add('Navver-tag')
+    this.tag.textContent = this.label
+    this.tag.style.position = 'absolute'
+    this.tag.style.top = elementOffset.top + 'px'
+    this.tag.style.left = elementOffset.left + 'px'
+    this.tag.style.background = 'yellow'
+    this.tag.style.border = '1px solid #333'
+    this.tag.style.borderRadius = '3px'
+    this.tag.style.zIndex = 10000000000
+    document.body.appendChild(this.tag)
   }
 }
 
