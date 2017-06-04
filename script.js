@@ -50,27 +50,13 @@ class KeyboardNavver {
   }
 
   createTags () {
-    var labelIndex = 0
-    var labels = this.generateLabels()
+    var labelGenerator = new LabelGenerator()
 
     var elements = $('a, button')
     for (var i = 0; i < elements.length; i++) {
-      var label = labels[labelIndex]
       var element = elements[i]
-      this.tags.push(new Tag(label, element))
-      labelIndex += 1
+      this.tags.push(new Tag(labelGenerator.next(), element))
     }
-  }
-
-  generateLabels () {
-    var characters = 'abcdefghijklmnopqrstuvwxyz'
-    var labels = []
-    for (var i = 0; i < characters.length; i++) {
-      for (var p = 0; p < characters.length; p++) {
-        labels.push(characters[i] + characters[p])
-      }
-    }
-    return labels
   }
 }
 
@@ -122,6 +108,30 @@ class ScrollNavver {
     }
 
     return false
+  }
+}
+
+class LabelGenerator {
+  constructor() {
+    this.labels = this.generateLabels()
+    this.index = 0
+  }
+
+  next() {
+    var label = this.labels[this.index]
+    this.index += 1
+    return label
+  }
+
+  generateLabels () {
+    var characters = 'abcdefghijklmnopqrstuvwxyz'
+    var labels = []
+    for (var i = 0; i < characters.length; i++) {
+      for (var p = 0; p < characters.length; p++) {
+        labels.push(characters[i] + characters[p])
+      }
+    }
+    return labels
   }
 }
 
