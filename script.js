@@ -1,15 +1,18 @@
+/* globals $ */
+
 class KeyboardNavver {
-  constructor() {
+  constructor () {
     this.tags = []
   }
 
-  consume(e) {
+  consume (e) {
     if (this.shouldLaunchNavver(e)) {
       this.createTags()
       this.keysPressed = ''
       return true
     }
-    if (this.tags.length != 0) {
+
+    if (this.tags.length !== 0) {
       this.keysPressed += e.key
       this.search(this.keysPressed)
       return true
@@ -18,21 +21,21 @@ class KeyboardNavver {
     return false
   }
 
-  shouldLaunchNavver(e) {
-    return e.code == 'KeyG' &&
-      e.srcElement.tagName != 'INPUT' &&
-      this.tags.length == 0
+  shouldLaunchNavver (e) {
+    return e.code === 'KeyG' &&
+      e.srcElement.tagName !== 'INPUT' &&
+      this.tags.length === 0
   }
 
-  search(search) {
+  search (search) {
     for (var i = 0; i < this.tags.length; i++) {
       var tag = this.tags[i]
 
-      if (tag.label == search) {
+      if (tag.label === search) {
         this.removeAllTags()
         tag.click()
         return
-      } else if (tag.label[0] == search) {
+      } else if (tag.label[0] === search) {
         tag.highlight(search)
       } else {
         tag.remove()
@@ -59,7 +62,7 @@ class KeyboardNavver {
     }
   }
 
-  findElements() {
+  findElements () {
     var elements = $('a, button')
     var visibleElements = []
     for (var i = 0; i < elements.length; i++) {
@@ -71,7 +74,7 @@ class KeyboardNavver {
     return visibleElements
   }
 
-  isScrolledIntoView(element) {
+  isScrolledIntoView (element) {
     var docViewTop = $(window).scrollTop()
     var docViewBottom = docViewTop + window.innerHeight
 
@@ -83,29 +86,29 @@ class KeyboardNavver {
 }
 
 class Tag {
-  constructor(label, element) {
+  constructor (label, element) {
     this.label = label
     this.element = element
     this.build()
   }
 
-  remove() {
+  remove () {
     this.$tag.remove()
   }
 
-  click() {
+  click () {
     this.element.click()
   }
 
-  highlight(search) {
-    if (search == this.label) {
-      this.$tag.html("<strong>" + this.label + "</strong>")
-    } else if (search == this.label[0]) {
-      this.$tag.html("<strong>" + this.label[0] + "</strong>" + this.label[1])
+  highlight (search) {
+    if (search === this.label) {
+      this.$tag.html('<strong>' + this.label + '</strong>')
+    } else if (search === this.label[0]) {
+      this.$tag.html('<strong>' + this.label[0] + '</strong>' + this.label[1])
     }
   }
 
-  build() {
+  build () {
     this.$tag = $('<div class="navver-tag">' + this.label + '</div>')
     this.$tag
       .css('position', 'absolute')
@@ -120,12 +123,12 @@ class Tag {
 }
 
 class ScrollNavver {
-  consume(e) {
-    if (e.key == 'j') {
-      window.scrollBy(0,50)
+  consume (e) {
+    if (e.key === 'j') {
+      window.scrollBy(0, 50)
       return true
-    } else if (e.key == 'k') {
-      window.scrollBy(0,-50)
+    } else if (e.key === 'k') {
+      window.scrollBy(0, -50)
       return true
     }
 
@@ -134,12 +137,12 @@ class ScrollNavver {
 }
 
 class LabelGenerator {
-  constructor() {
+  constructor () {
     this.labels = this.generateLabels()
     this.index = 0
   }
 
-  next() {
+  next () {
     var label = this.labels[this.index]
     this.index += 1
     return label
@@ -158,15 +161,14 @@ class LabelGenerator {
 }
 
 class Navver {
-  constructor() {
+  constructor () {
     this.consumers = [
-      new KeyboardNavver,
-      new ScrollNavver
+      new KeyboardNavver(),
+      new ScrollNavver()
     ]
-    document.onkeydown = this.handleKeyboardEvent.bind(this)
   }
 
-  handleKeyboardEvent(e) {
+  handleKeyboardEvent (e) {
     for (var i = 0; i < this.consumers.length; i++) {
       if (this.consumers[i].consume(e)) {
         return false
@@ -175,4 +177,5 @@ class Navver {
   }
 }
 
-new Navver
+var navver = new Navver()
+document.onkeydown = navver.handleKeyboardEvent.bind(navver)
