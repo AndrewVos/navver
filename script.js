@@ -52,11 +52,33 @@ class KeyboardNavver {
   createTags () {
     var labelGenerator = new LabelGenerator()
 
-    var elements = $('a, button')
+    var elements = this.findElements()
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i]
       this.tags.push(new Tag(labelGenerator.next(), element))
     }
+  }
+
+  findElements() {
+    var elements = $('a, button')
+    var visibleElements = []
+    for (var i = 0; i < elements.length; i++) {
+      var element = elements[i]
+      if (this.isScrolledIntoView(element)) {
+        visibleElements.push(element)
+      }
+    }
+    return visibleElements
+  }
+
+  isScrolledIntoView(element) {
+    var docViewTop = $(window).scrollTop()
+    var docViewBottom = docViewTop + window.innerHeight
+
+    var top = $(element).offset().top
+    var bottom = top + $(element).height()
+
+    return ((bottom <= docViewBottom) && (top >= docViewTop))
   }
 }
 
