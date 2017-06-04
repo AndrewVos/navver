@@ -111,15 +111,34 @@ class Tag {
   }
 }
 
+class ScrollNavver {
+  consume(e) {
+    if (e.key == 'j') {
+      window.scrollBy(0,50)
+      return true
+    } else if (e.key == 'k') {
+      window.scrollBy(0,-50)
+      return true
+    }
+
+    return false
+  }
+}
+
 class Navver {
   constructor() {
-    this.keyboardNavver = new KeyboardNavver
+    this.consumers = [
+      new KeyboardNavver,
+      new ScrollNavver
+    ]
     document.onkeydown = this.handleKeyboardEvent.bind(this)
   }
 
   handleKeyboardEvent(e) {
-    if (this.keyboardNavver.consume(e)) {
-      return false
+    for (var i = 0; i < this.consumers.length; i++) {
+      if (this.consumers[i].consume(e)) {
+        return false
+      }
     }
   }
 }
