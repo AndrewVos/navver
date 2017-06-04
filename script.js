@@ -1,109 +1,127 @@
-document.onkeydown = keyboardNavigation
+class KeyboardNavver {
+  constructor() {
+    this.tags = []
+  }
 
-function keyboardNavigation(e) {
-  if (shouldLaunchNavver(e)) {
-    createTags()
+  consume(e) {
+    if (this.shouldLaunchNavver(e)) {
+      this.createTags()
+      this.keysPressed = ''
+      return true
+    }
+    if (this.tags.length != 0) {
+      this.keysPressed += e.key
+      this.search(this.keysPressed)
+      return true
+    }
+
     return false
   }
 
-  if (window.navverTags) {
-    processKeyboardEvent(e)
-  }
-}
-
-function processKeyboardEvent(e) {
-  window.navverKeysPressed += e.key
-  search(window.navverKeysPressed)
-  e.preventDefault()
-  return false
-}
-
-function shouldLaunchNavver(e) {
-  return e.code == 'KeyG' &&
-    e.srcElement.tagName != 'INPUT'
-    !window.navverTags
-}
-
-function search(search) {
-  for (var i = 0; i < window.navverTags.length; i++) {
-    var tag = window.navverTags[i]
-
-    if (tag.label == search) {
-      removeAllTags()
-      tag.click()
-      return
-    } else if (tag.label[0] == search) {
-      tag.highlight(search)
-    } else {
-      tag.remove()
-      window.navverTags.splice(i, 1)
-      i--
-    }
+  shouldLaunchNavver(e) {
+    return e.code == 'KeyG' &&
+      e.srcElement.tagName != 'INPUT' &&
+      this.tags.length == 0
   }
 
-  if (window.navverTags.length == 0) {
-    removeAllTags()
-  }
+  search(search) {
+    for (var i = 0; i < this.tags.length; i++) {
+      var tag = this.tags[i]
 
-  return null
-}
-
-function removeAllTags () {
-  for (var i = 0; i < window.navverTags.length; i++) {
-    var tag = window.navverTags[i]
-    tag.remove()
-  }
-  window.navverTags = null
-}
-
-function createTags () {
-  window.navverKeysPressed = ''
-  window.navverTags = []
-
-  var labelIndex = 0
-  var labels = generateLabels()
-
-  $('a, button').each(function () {
-    var label = labels[labelIndex]
-    var $a = $(this)
-    var $tag = $('<div class="navver-tag">' + label+ '</div>')
-    $tag.css('position', 'absolute')
-    $tag.css('top', $a.offset().top)
-    $tag.css('left', $a.offset().left)
-    $tag.css('background', 'yellow')
-    $tag.css('border', '1px solid #333')
-    $tag.css('border-radius', '3px')
-    $tag.css('z-index', 10000000000)
-    $('body').append($tag)
-    window.navverTags.push(
-      {
-        label: label,
-        remove: function () {
-          $tag.remove()
-        },
-        click: function () {
-          $a[0].click()
-        },
-        highlight: function (search) {
-          if (search == label) {
-            $tag.html("<strong>" + label + "</strong>")
-          } else if (search == label[0]) {
-            $tag.html("<strong>" + label[0] + "</strong>" + label[1])
-          }
-        }
+      if (tag.label == search) {
+        this.removeAllTags()
+        tag.click()
+        return
+      } else if (tag.label[0] == search) {
+        tag.highlight(search)
+      } else {
+        tag.remove()
+        this.tags.splice(i, 1)
+        i--
       }
-    )
-    labelIndex += 1
-  })
-}
-
-function generateLabels () {
-  var characters = 'abcdefghijklmnopqrstuvwxyz'
-  var labels = []
-  for (var i = 0; i < characters.length; i++) {
-    for (var p = 0; p < characters.length; p++) {
-      labels.push(characters[i] + characters[p])
     }
   }
-  return labels
+
+  removeAllTags () {
+    for (var i = 0; i < this.tags.length; i++) {
+      var tag = this.tags[i]
+      tag.remove()
+    }
+  }
+
+  createTags () {
+    var labelIndex = 0
+    var labels = this.generateLabels()
+
+    var elements = $('a, button')
+    for (var i = 0; i < elements.length; i++) {
+      var label = labels[labelIndex]
+      var element = elements[i]
+      this.tags.push(new Tag(label, element))
+      labelIndex += 1
+    }
+  }
+
+  generateLabels () {
+    var characters = 'abcdefghijklmnopqrstuvwxyz'
+    var labels = []
+    for (var i = 0; i < characters.length; i++) {
+      for (var p = 0; p < characters.length; p++) {
+        labels.push(characters[i] + characters[p])
+      }
+    }
+    return labels
+  }
 }
+
+class Tag {
+  constructor(label, element) {
+    this.label = label
+    this.element = element
+    this.build()
+  }
+
+  remove() {
+    this.$tag.remove()
+  }
+
+  click() {
+    this.element.click()
+  }
+
+  highlight(search) {
+    if (search == this.label) {
+      this.$tag.html("<strong>" + this.label + "</strong>")
+    } else if (search == this.label[0]) {
+      this.$tag.html("<strong>" + this.label[0] + "</strong>" + this.label[1])
+    }
+  }
+
+  build() {
+    this.$tag = $('<div class="navver-tag">' + this.label + '</div>')
+    this.$tag
+      .css('position', 'absolute')
+      .css('top', $(this.element).offset().top)
+      .css('left', $(this.element).offset().left)
+      .css('background', 'yellow')
+      .css('border', '1px solid #333')
+      .css('border-radius', '3px')
+      .css('z-index', 10000000000)
+    $('body').append(this.$tag)
+  }
+}
+
+class Navver {
+  constructor() {
+    this.keyboardNavver = new KeyboardNavver
+    document.onkeydown = this.handleKeyboardEvent.bind(this)
+  }
+
+  handleKeyboardEvent(e) {
+    if (this.keyboardNavver.consume(e)) {
+      return false
+    }
+  }
+}
+
+new Navver
