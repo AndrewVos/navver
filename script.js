@@ -50,6 +50,7 @@ class KeyboardNavver {
       var tag = this.tags[i]
       tag.remove()
     }
+    this.tags = []
   }
 
   createTags () {
