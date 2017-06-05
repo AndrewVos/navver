@@ -8,7 +8,15 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["script.js"]
+      "js": [
+        "reset.js",
+        "element-finder.js",
+        "navver.js",
+        "search-navver.js",
+        "keyboard-navver.js",
+        "scroll-navver.js",
+        "script.js"
+      ]
     }
   ]
 }
