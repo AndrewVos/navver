@@ -6,7 +6,7 @@ class KeyboardNavigator {
   }
 
   activationKey () {
-    return 'g'
+    return 'f'
   }
 
   activate () {
