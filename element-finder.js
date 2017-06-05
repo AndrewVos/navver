@@ -12,8 +12,17 @@ class ElementFinder {
   }
 
   static isVisible (element) {
+    var rectangle = element.getBoundingClientRect()
+    if (rectangle.height <= 0 || rectangle.width <= 0) {
+      return false
+    }
+
     var style = window.getComputedStyle(element)
-    return (style.display !== 'none')
+    if (style.display === 'none') {
+      return false
+    }
+
+    return true
   }
 
   static findClickableElements () {
@@ -32,7 +41,7 @@ class ElementFinder {
     var viewportBottom = viewportTop + window.innerHeight
 
     var elementRectangle = element.getBoundingClientRect()
-    var top = elementRectangle.top + document.body.scrollTop
+    var top = elementRectangle.top + viewportTop
     var height = element.clientHeight
     var bottom = top + height
 
