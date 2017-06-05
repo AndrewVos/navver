@@ -8,13 +8,13 @@ class Navigator {
 
   createInput () {
     this.container = Reset.resetElement(document.createElement('div'))
+    this.container.style.zIndex = 100000
     this.container.style.position = 'fixed'
     this.container.style.bottom = '10px'
     this.container.style.left = '10px'
     this.container.style.right = '10px'
     this.container.style.borderRadius = '5px'
     this.container.style.backgroundColor = '#373b41'
-    this.container.style.zIndex = 1000000
     document.body.appendChild(this.container)
 
     this.input = Reset.resetElement(document.createElement('input'))
@@ -176,6 +176,7 @@ class VisibleElement {
 
     var tagWidth = 20
     this.tag.textContent = this.label
+    this.tag.style.zIndex = 10000
     this.tag.style.position = 'absolute'
     this.tag.style.textAlign = 'center'
     this.tag.style.width = tagWidth + 'px'
