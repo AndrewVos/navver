@@ -75,6 +75,16 @@ class SearchNavigator {
     this.matchedElements = []
   }
 
+  selectPreviousElement () {
+    this.focusedElement -= 1
+
+    if (this.focusedElement === -1) {
+      this.focusedElement = this.matchedElements.length - 1
+    }
+
+    this.renderMatchedElements()
+  }
+
   selectNextElement () {
     this.focusedElement += 1
     if (this.focusedElement === this.matchedElements.length) {
@@ -121,7 +131,11 @@ class SearchNavigator {
       this.destroy()
       return false
     } else if (e.key === 'Tab') {
-      this.selectNextElement()
+      if (e.shiftKey) {
+        this.selectPreviousElement()
+      } else {
+        this.selectNextElement()
+      }
       return false
     } else if (e.key === 'Enter') {
       this.clickFocusedElement()
