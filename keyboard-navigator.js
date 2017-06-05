@@ -60,35 +60,11 @@ class KeyboardNavigator {
   createTags () {
     var labelGenerator = new LabelGenerator()
 
-    var elements = this.findClickableElements()
+    var elements = ElementFinder.all()
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i]
       this.tags.push(new Tag(labelGenerator.next(), element))
     }
-  }
-
-  findClickableElements () {
-    var elements = ElementFinder.findElements()
-    var visibleElements = []
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i]
-      if (this.isScrolledIntoView(element)) {
-        visibleElements.push(element)
-      }
-    }
-    return visibleElements
-  }
-
-  isScrolledIntoView (element) {
-    var viewportTop = document.body.scrollTop
-    var viewportBottom = viewportTop + window.innerHeight
-
-    var elementRectangle = element.getBoundingClientRect()
-    var top = elementRectangle.top + document.body.scrollTop
-    var height = element.clientHeight
-    var bottom = top + height
-
-    return ((bottom <= viewportBottom) && (top >= viewportTop))
   }
 }
 

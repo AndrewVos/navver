@@ -53,7 +53,7 @@ class SearchNavigator {
     this.resetMatchedElements()
 
     var search = this.input.value.toLowerCase()
-    var elements = ElementFinder.findElements()
+    var elements = ElementFinder.all()
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i]
       var index = element.textContent.toLowerCase().indexOf(search)
@@ -103,7 +103,6 @@ class SearchNavigator {
 
       if (i === this.focusedElement) {
         element.style.backgroundColor = 'green'
-        window.scroll(0, this.elementOffset(element).top)
       } else {
         element.style.backgroundColor = 'yellow'
       }

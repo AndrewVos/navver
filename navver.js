@@ -20,7 +20,7 @@ class Navver {
       this.activeNavigator.destroy()
       this.activeNavigator = null
       return false
-    } else if (e.srcElement.tagName !== 'INPUT' && !this.activeNavigator) {
+    } else if (!this.insideInput(e) && !this.activeNavigator) {
       this.activeNavigator = this.findNavigator(e.key)
       if (this.activeNavigator) {
         this.activeNavigator.activate()
@@ -28,7 +28,7 @@ class Navver {
       }
     }
 
-    if (this.activeNavigator || e.srcElement.tagName === 'INPUT') {
+    if (this.activeNavigator || this.insideInput(e)) {
       return
     }
 
@@ -47,6 +47,10 @@ class Navver {
     }
   }
 
+  static insideInput (e) {
+    return e.srcElement.tagName == 'INPUT' ||
+      e.srcElement.tagName == 'TEXTAREA'
+  }
   static endsWith (str, suffix) {
     return str.indexOf(suffix, str.length - suffix.length) !== -1
   }
