@@ -18,9 +18,7 @@
         "scroll-to-top.js",
         "scroll-to-bottom.js",
         "application.js"
-      ],
-      "run_at": "document_end",
-      "all_frames": true
+      ]
     }
   ]
 }

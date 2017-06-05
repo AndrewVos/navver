@@ -6,20 +6,21 @@ class Application {
       new ScrollToTop(),
       new ScrollToBottom()
     ]
+    this.navigator = new Navigator()
   }
 
   handleKeyboardEvent (e) {
-    if (this.navigator && e.key === 'Escape') {
-      this.navigator.destroy()
-      this.navigator = null
+    if (e.key === 'Escape') {
+      this.navigator.hide()
+      e.preventDefault()
       return false
-    } else if (!this.insideInput(e) && !this.navigator && e.key == 'f') {
-      this.navigator = new Navigator()
-      this.navigator.activate()
+    } else if (!this.insideInput(e) && e.key == 'f') {
+      this.navigator.show()
+      e.preventDefault()
       return false
     }
 
-    if (this.navigator || this.insideInput(e)) {
+    if (this.insideInput(e)) {
       return
     }
 
@@ -33,6 +34,7 @@ class Application {
       if (this.endsWith(this.keysPressed, shortcut.key())) {
         this.keysPressed = ''
         shortcut.action()
+        e.preventDefault()
         return false
       }
     }
@@ -48,7 +50,5 @@ class Application {
   }
 }
 
-window.addEventListener('load', function () {
-  var application = new Application ()
-  document.onkeydown = application.handleKeyboardEvent.bind(application)
-}, false )
+var application = new Application ()
+window.addEventListener('keydown', application.handleKeyboardEvent.bind(application))

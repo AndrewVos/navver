@@ -1,11 +1,7 @@
 /* globals Navver, ElementFinder, Reset */
 
 class Navigator {
-  constructor () {
-    this.keysPressed = ''
-  }
-
-  activate () {
+  show () {
     this.createInput()
     this.search()
   }
@@ -18,6 +14,7 @@ class Navigator {
     this.container.style.right = '10px'
     this.container.style.borderRadius = '5px'
     this.container.style.backgroundColor = '#373b41'
+    this.container.style.zIndex = 1000000
     document.body.appendChild(this.container)
 
     this.input = Reset.resetElement(document.createElement('input'))
@@ -38,11 +35,12 @@ class Navigator {
     this.input.focus()
   }
 
-  destroy () {
+  hide () {
     if (this.elements) {
       this.elements.destroy()
     }
     this.container.remove()
+    this.container = null
   }
 
   handleInput (e) {
@@ -67,7 +65,7 @@ class Navigator {
 
   handleKeyDown (e) {
     if (e.key === 'Escape') {
-      this.destroy()
+      this.hide()
       return false
     } else if (e.key === 'Tab') {
       if (e.shiftKey) {
@@ -80,7 +78,7 @@ class Navigator {
       var focused = this.elements.focused()
       if (focused) {
         this.elements.destroy()
-        this.destroy()
+        this.hide()
         focused.click()
       }
       return false
