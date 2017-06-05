@@ -69,7 +69,7 @@ class SearchNavigator {
   resetMatchedElements () {
     for (var i = 0; i < this.matchedElements.length; i++) {
       var element = this.matchedElements[i]
-      element.style.backgroundColor = element.getAttribute('data-navver-old-background-color')
+      element.setAttribute('style', element.getAttribute('data-navver-old-style'))
     }
     this.focusedElement = 0
     this.matchedElements = []
@@ -87,8 +87,8 @@ class SearchNavigator {
   renderMatchedElements () {
     for (var i = 0; i < this.matchedElements.length; i++) {
       var element = this.matchedElements[i]
-      if (!element.hasAttribute('data-navver-old-background-color')) {
-        element.setAttribute('data-navver-old-background-color', element.style.backgroundColor)
+      if (!element.hasAttribute('data-navver-old-style')) {
+        element.setAttribute('data-navver-old-style', element.getAttribute('style'))
       }
 
       if (i === this.focusedElement) {
