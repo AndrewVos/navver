@@ -28,14 +28,27 @@ class Navver {
       }
     }
 
-    if (!this.activeNavigator) {
-      for (var i = 0; i < this.shortcuts.length; i++) {
-        var shortcut = this.shortcuts[i]
-        if (shortcut.consume(e)) {
-          return false
-        }
+    if (this.activeNavigator || e.srcElement.tagName === 'INPUT') {
+      return
+    }
+
+    if (!this.keysPressed) {
+      this.keysPressed = ''
+    }
+    this.keysPressed += e.key
+
+    for (var i = 0; i < this.shortcuts.length; i++) {
+      var shortcut = this.shortcuts[i]
+      if (this.endsWith(this.keysPressed, shortcut.key())) {
+        this.keysPressed = ''
+        shortcut.action()
+        return false
       }
     }
+  }
+
+  static endsWith (str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1
   }
 
   static findNavigator (key) {

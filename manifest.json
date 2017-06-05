@@ -14,7 +14,10 @@
         "navver.js",
         "search-navigator.js",
         "keyboard-navigator.js",
-        "scroll-shortcut.js"
+        "scroll-down-shortcut.js",
+        "scroll-up-shortcut.js",
+        "scroll-to-top-shortcut.js",
+        "scroll-to-bottom-shortcut.js"
       ]
     }
   ]
