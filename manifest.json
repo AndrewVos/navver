@@ -11,14 +11,16 @@
       "js": [
         "reset.js",
         "element-finder.js",
-        "navver.js",
-        "search-navigator.js",
-        "keyboard-navigator.js",
-        "scroll-down-shortcut.js",
-        "scroll-up-shortcut.js",
-        "scroll-to-top-shortcut.js",
-        "scroll-to-bottom-shortcut.js"
-      ]
+        "label-generator.js",
+        "navigator.js",
+        "scroll-down.js",
+        "scroll-up.js",
+        "scroll-to-top.js",
+        "scroll-to-bottom.js",
+        "application.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": true
     }
   ]
 }
