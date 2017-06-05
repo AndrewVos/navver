@@ -12,10 +12,9 @@
         "reset.js",
         "element-finder.js",
         "navver.js",
-        "search-navver.js",
-        "keyboard-navver.js",
-        "scroll-navver.js",
-        "script.js"
+        "search-navigator.js",
+        "keyboard-navigator.js",
+        "scroll-shortcut.js"
       ]
     }
   ]

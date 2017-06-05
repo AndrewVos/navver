@@ -1,6 +1,6 @@
 /* globals Navver */
 
-class ScrollNavver {
+class ScrollShortcut {
   consume (e) {
     if (e.srcElement.tagName === 'INPUT') {
       return false
@@ -16,4 +16,4 @@ class ScrollNavver {
   }
 }
 
-Navver.addKeyboardConsumer(new ScrollNavver())
+Navver.addShortcut(new ScrollShortcut())

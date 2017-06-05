@@ -1,17 +1,27 @@
 /* globals Navver, Reset, ElementFinder */
 
-class KeyboardNavver {
+class KeyboardNavigator {
   constructor () {
     this.tags = []
   }
 
-  consume (e) {
-    if (this.shouldLaunchNavver(e)) {
-      this.createTags()
-      this.keysPressed = ''
-      return true
-    }
+  activationKey () {
+    return 'g'
+  }
 
+  activate () {
+    this.boundHandleKeyDown = this.handleKeyDown.bind(this)
+    document.addEventListener('keydown', this.boundHandleKeyDown)
+    this.keysPressed = ''
+    this.createTags()
+  }
+
+  destroy () {
+    document.removeEventListener('keydown', this.boundHandleKeyDown)
+    this.removeAllTags()
+  }
+
+  handleKeyDown (e) {
     if (this.tags.length !== 0) {
       this.keysPressed += e.key
       this.search(this.keysPressed)
@@ -19,12 +29,6 @@ class KeyboardNavver {
     }
 
     return false
-  }
-
-  shouldLaunchNavver (e) {
-    return e.code === 'KeyG' &&
-      e.srcElement.tagName !== 'INPUT' &&
-      this.tags.length === 0
   }
 
   search (search) {
@@ -157,4 +161,4 @@ class LabelGenerator {
   }
 }
 
-Navver.addKeyboardConsumer(new KeyboardNavver())
+Navver.addNavigator(new KeyboardNavigator())

@@ -1,20 +1,18 @@
 /* globals Navver, ElementFinder, Reset */
 
-class SearchNavver {
+class SearchNavigator {
   constructor () {
-    this.enabled = false
     this.keysPressed = ''
     this.matchedElements = []
     this.focusedElement = 0
   }
 
-  consume (e) {
-    if (!this.enabled && e.key === '/') {
-      this.createInput()
-      return true
-    }
+  activationKey () {
+    return '/'
+  }
 
-    return false
+  activate () {
+    this.createInput()
   }
 
   createInput () {
@@ -132,4 +130,4 @@ class SearchNavver {
   }
 }
 
-Navver.addKeyboardConsumer(new SearchNavver())
+Navver.addNavigator(new SearchNavigator())
