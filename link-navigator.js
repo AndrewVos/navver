@@ -1,46 +1,25 @@
-/* globals Navver, ElementFinder, Reset */
+/* globals NavigatorInput, ElementFinder, LabelGenerator, Reset */
 
-class Navigator {
-  show () {
-    this.createInput()
+class LinkNavigator {
+  constructor (onHide) {
+    this.onHide = onHide
+    this.input = new NavigatorInput(
+      this.handleKeyDown.bind(this),
+      this.handleInput.bind(this)
+    )
     this.search()
   }
 
-  createInput () {
-    this.container = Reset.resetElement(document.createElement('div'))
-    this.container.style.zIndex = 100000
-    this.container.style.position = 'fixed'
-    this.container.style.bottom = '10px'
-    this.container.style.left = '10px'
-    this.container.style.right = '10px'
-    this.container.style.borderRadius = '5px'
-    this.container.style.backgroundColor = '#373b41'
-    document.body.appendChild(this.container)
-
-    this.input = Reset.resetElement(document.createElement('input'))
-    this.input.style.fontSize = '30px'
-    this.input.style.marginTop = '10px'
-    this.input.style.marginBottom = '10px'
-    this.input.style.marginLeft = '10px'
-    this.input.style.width = '-webkit-calc(100% - 20px)'
-    this.input.style.background = 'transparent'
-    this.input.style.color = 'white'
-    this.input.style.border = 'none'
-    this.input.style.outline = 'none'
-    this.container.appendChild(this.input)
-
-    this.input.onkeydown = this.handleKeyDown.bind(this)
-    this.input.oninput = this.handleInput.bind(this)
-
-    this.input.focus()
+  static activationKey () {
+    return 'f'
   }
 
   hide () {
     if (this.elements) {
       this.elements.destroy()
     }
-    this.container.remove()
-    this.container = null
+    this.input.remove()
+    this.onHide()
   }
 
   handleInput (e) {
@@ -51,7 +30,7 @@ class Navigator {
     if (this.elements) {
       this.elements.destroy()
     }
-    var search = this.input.value.toLowerCase()
+    var search = this.input.value().toLowerCase()
     this.elements = new VisibleElementList(search)
   }
 
@@ -108,9 +87,9 @@ class VisibleElementList {
 
   match (element, label, search) {
     search = search.toLowerCase()
-    return search == '' ||
-      element.textContent.toLowerCase().indexOf(search) != -1 ||
-      label.indexOf(search) != -1
+    return search === '' ||
+      element.textContent.toLowerCase().indexOf(search) !== -1 ||
+      label.indexOf(search) !== -1
   }
 
   focused () {
@@ -154,7 +133,6 @@ class VisibleElementList {
     this.focusedElement = 0
     this.elements = []
   }
-
 }
 
 class VisibleElement {
@@ -165,7 +143,7 @@ class VisibleElement {
     this.buildTag()
   }
 
-  buildTag() {
+  buildTag () {
     this.tag = Reset.resetElement(document.createElement('div'))
 
     var elementRectangle = this.element.getBoundingClientRect()
