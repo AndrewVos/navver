@@ -31,7 +31,7 @@ class LinkNavigator {
       this.elements.destroy()
     }
     var search = this.input.value().toLowerCase()
-    this.elements = new VisibleElementList(search)
+    this.elements = new MatchList(search)
   }
 
   elementOffset (element) {
@@ -65,7 +65,7 @@ class LinkNavigator {
   }
 }
 
-class VisibleElementList {
+class MatchList {
   constructor (search) {
     this.focusedElement = 0
 
@@ -77,7 +77,7 @@ class VisibleElementList {
       var element = elements[i]
       var label = labelGenerator.next()
       if (this.match(element, label, search)) {
-        var visibleElement = new VisibleElement(element, label)
+        var visibleElement = new Match(element, label)
         this.elements.push(visibleElement)
       }
     }
@@ -135,7 +135,7 @@ class VisibleElementList {
   }
 }
 
-class VisibleElement {
+class Match {
   constructor (element, label) {
     this.element = element
     this.label = label
