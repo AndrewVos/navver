@@ -4,7 +4,7 @@
   "description": "Simple, lightweight mouseless navigation",
   "version": "0.1",
   "icons": {
-    "128": "logo.png"
+    "128": "logo-128.png"
   },
   "content_scripts": [
     {
