@@ -15,7 +15,7 @@ class Application {
   }
 
   handleKeyboardEvent (e) {
-    if (this.insideInput(e)) {
+    if (e.ctrlKey || this.insideInput(e)) {
       return
     }
 
