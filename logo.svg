@@ -10,9 +10,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="52.100239mm"
-   height="52.193474mm"
-   viewBox="0 0 184.60715 184.9375"
+   width="184"
+   height="184"
+   viewBox="0 0 184 184"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
@@ -76,10 +76,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="58.195821"
+     inkscape:cx="58.700897"
      inkscape:cy="57.863893"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:window-width="1680"
      inkscape:window-height="987"
@@ -89,7 +89,8 @@
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="0"
+     units="px" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -107,8 +108,7 @@
      id="layer3"
      inkscape:label="key background"
      style="display:inline"
-     sodipodi:insensitive="true"
-     transform="translate(-140.77678,-434.45149)">
+     transform="translate(-140.77678,-435.38898)">
     <rect
        style="display:inline;fill:#ededed;fill-opacity:1;stroke:none;stroke-width:3;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4193"
@@ -122,7 +122,7 @@
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="blur lines"
-     transform="translate(-140.77678,-434.45149)">
+     transform="translate(-140.77678,-435.38898)">
     <path
        style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4728)"
        d="m 289.375,447.45149 22.32143,-10.80357 4.91071,1.51785 5.26786,7.32143 -24.91071,10.98215 -1.07143,-4.73215 -3.21429,-3.21428 z"
@@ -149,7 +149,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      style="display:inline"
-     transform="translate(-140.77678,-434.45149)">
+     transform="translate(-140.77678,-435.38898)">
     <rect
        style="fill:#e7e7e7;fill-opacity:1;stroke:#ffffff;stroke-width:2.16633821;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4193-6"
@@ -176,8 +176,7 @@
      id="layer4"
      inkscape:label="border"
      style="display:inline"
-     sodipodi:insensitive="true"
-     transform="translate(-140.77678,-434.45149)">
+     transform="translate(-140.77678,-435.38898)">
     <rect
        style="display:inline;fill:none;fill-opacity:1;stroke:#919191;stroke-width:3;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4193-9"
