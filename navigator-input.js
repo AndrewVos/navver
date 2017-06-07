@@ -1,7 +1,7 @@
-/* globals Reset */
+/* globals Element */
 window.NavigatorInput = class NavigatorInput {
   constructor (onKeyDown, onInput) {
-    this.container = Reset.resetElement(document.createElement('div'))
+    this.container = Element.create('div')
     this.container.style.zIndex = 100000
     this.container.style.position = 'fixed'
     this.container.style.bottom = '10px'
@@ -11,7 +11,7 @@ window.NavigatorInput = class NavigatorInput {
     this.container.style.backgroundColor = '#373b41'
     document.body.appendChild(this.container)
 
-    this.input = Reset.resetElement(document.createElement('input'))
+    this.input = Element.create('input')
     this.input.style.fontSize = '30px'
     this.input.style.marginTop = '10px'
     this.input.style.marginBottom = '10px'

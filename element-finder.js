@@ -4,11 +4,17 @@ window.ElementFinder = class ElementFinder {
     var visibleElements = []
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i]
-      if (this.isVisible(element) && this.isScrolledIntoView(element)) {
+      if (this.isValid(element)) {
         visibleElements.push(element)
       }
     }
     return visibleElements
+  }
+
+  static isValid(element) {
+    return this.isVisible(element) &&
+      this.isScrolledIntoView(element) &&
+      !element.classList.contains('Navver')
   }
 
   static isVisible (element) {

@@ -1,4 +1,4 @@
-/* globals NavigatorInput, ElementFinder, LabelGenerator, Reset */
+/* globals NavigatorInput, ElementFinder, Element, LabelGenerator */
 
 window.Navigator = class Navigator {
   constructor (onHide) {
@@ -144,7 +144,7 @@ class Match {
   }
 
   buildTag () {
-    this.tag = Reset.resetElement(document.createElement('div'))
+    this.tag = Element.create('div')
 
     var elementRectangle = this.element.getBoundingClientRect()
     var elementOffset = {
