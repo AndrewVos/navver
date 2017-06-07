@@ -1,10 +1,10 @@
-/* globals LinkNavigator, ScrollUp, ScrollDown, ScrollToTop, ScrollToBottom */
+/* globals Navigator, ScrollUp, ScrollDown, ScrollToTop, ScrollToBottom */
 class Application {
   constructor () {
     this.keysPressed = ''
 
     this.navigators = [
-      LinkNavigator
+      Navigator
     ]
     this.shortcuts = [
       new ScrollUp(),

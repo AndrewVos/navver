@@ -26,7 +26,7 @@ class ElementFinder {
   }
 
   static findClickableElements () {
-    var tags = ['a', 'button']
+    var tags = ['a', 'button', 'input']
     var elements = []
     for (var i = 0; i < tags.length; i++) {
       elements = elements.concat(

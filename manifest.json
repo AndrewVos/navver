@@ -13,7 +13,7 @@
         "element-finder.js",
         "label-generator.js",
         "navigator-input.js",
-        "link-navigator.js",
+        "navigator.js",
         "scroll-down.js",
         "scroll-up.js",
         "scroll-to-top.js",

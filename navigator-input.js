@@ -1,3 +1,4 @@
+/* globals Reset */
 class NavigatorInput {
   constructor (onKeyDown, onInput) {
     this.container = Reset.resetElement(document.createElement('div'))

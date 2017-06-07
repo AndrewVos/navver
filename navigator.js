@@ -1,6 +1,6 @@
 /* globals NavigatorInput, ElementFinder, LabelGenerator, Reset */
 
-class LinkNavigator {
+class Navigator {
   constructor (onHide) {
     this.onHide = onHide
     this.input = new NavigatorInput(
@@ -58,7 +58,7 @@ class LinkNavigator {
       if (focused) {
         this.elements.destroy()
         this.hide()
-        focused.click()
+        focused.action()
       }
       return false
     }
@@ -177,8 +177,12 @@ class Match {
     this.element.style.color = 'black'
   }
 
-  click () {
-    this.element.click()
+  action () {
+    if (this.element.tagName === 'INPUT') {
+      this.element.focus()
+    } else {
+      this.element.click()
+    }
   }
 
   destroy () {
