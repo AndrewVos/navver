@@ -10,7 +10,7 @@
       "matches": ["<all_urls>"],
       "js": [
         "element.js",
-        "element-finder.js",
+        "navver-element.js",
         "label-generator.js",
         "navigator-input.js",
         "navigator.js",

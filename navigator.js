@@ -1,4 +1,4 @@
-/* globals NavigatorInput, ElementFinder, Element, LabelGenerator */
+/* globals NavigatorInput, Element */
 
 window.Navigator = class Navigator {
   constructor (onHide) {
@@ -15,9 +15,7 @@ window.Navigator = class Navigator {
   }
 
   hide () {
-    if (this.elements) {
-      this.elements.destroy()
-    }
+    this.destroyElements()
     this.input.remove()
     this.onHide()
   }
@@ -26,12 +24,31 @@ window.Navigator = class Navigator {
     this.search()
   }
 
-  search () {
+  destroyElements () {
     if (this.elements) {
-      this.elements.destroy()
+      for (var i = 0; i < this.elements.length; i++) {
+        this.elements[i].destroy()
+      }
     }
+    this.elements = []
+    this.focusedElement = 0
+  }
+
+  search () {
+    this.destroyElements()
     var search = this.input.value().toLowerCase()
-    this.elements = new MatchList(search)
+
+    var actionable = Element.actionable()
+    this.elements = []
+    for (var i = 0; i < actionable.length; i++) {
+      var element = actionable[i]
+      if (element.match(search)) {
+        element.show()
+        this.elements.push(element)
+      }
+    }
+
+    this.renderFocusedElement()
   }
 
   elementOffset (element) {
@@ -40,60 +57,6 @@ window.Navigator = class Navigator {
       top: elementRectangle.top + document.body.scrollTop,
       left: elementRectangle.left + document.body.scrollLeft
     }
-  }
-
-  handleKeyDown (e) {
-    if (e.key === 'Escape') {
-      this.hide()
-      return false
-    } else if (e.key === 'Tab') {
-      if (e.shiftKey) {
-        this.elements.selectPreviousElement()
-      } else {
-        this.elements.selectNextElement()
-      }
-      return false
-    } else if (e.key === 'Enter') {
-      var focused = this.elements.focused()
-      if (focused) {
-        this.elements.destroy()
-        this.hide()
-        focused.action(e)
-      }
-      return false
-    }
-  }
-}
-
-class MatchList {
-  constructor (search) {
-    this.focusedElement = 0
-
-    var elements = ElementFinder.all()
-    var labelGenerator = new LabelGenerator()
-    this.elements = []
-
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i]
-      var label = labelGenerator.next()
-      if (this.match(element, label, search)) {
-        var visibleElement = new Match(element, label)
-        this.elements.push(visibleElement)
-      }
-    }
-
-    this.renderFocusedElement()
-  }
-
-  match (element, label, search) {
-    search = search.toLowerCase()
-    return search === '' ||
-      element.textContent.toLowerCase().indexOf(search) !== -1 ||
-      label.indexOf(search) !== -1
-  }
-
-  focused () {
-    return this.elements[this.focusedElement]
   }
 
   selectPreviousElement () {
@@ -125,75 +88,28 @@ class MatchList {
     }
   }
 
-  destroy () {
-    for (var i = 0; i < this.elements.length; i++) {
-      var element = this.elements[i]
-      element.destroy()
-    }
-    this.focusedElement = 0
-    this.elements = []
-  }
-}
-
-class Match {
-  constructor (element, label) {
-    this.element = element
-    this.label = label
-    this.oldStyle = this.element.getAttribute('style')
-    this.buildTag()
+  focused () {
+    return this.elements[this.focusedElement]
   }
 
-  buildTag () {
-    this.tag = Element.create('div')
-
-    var elementRectangle = this.element.getBoundingClientRect()
-    var elementOffset = {
-      top: elementRectangle.top + document.body.scrollTop,
-      left: elementRectangle.left + document.body.scrollLeft
-    }
-
-    var tagWidth = 20
-    this.tag.textContent = this.label
-    this.tag.style.zIndex = 10000
-    this.tag.style.position = 'absolute'
-    this.tag.style.textAlign = 'center'
-    this.tag.style.width = tagWidth + 'px'
-    this.tag.style.top = elementOffset.top + 'px'
-    this.tag.style.left = (elementOffset.left - tagWidth) + 'px'
-    this.tag.style.backgroundColor = '#d9534f'
-    this.tag.style.color = 'white'
-    this.tag.style.borderTopLeftRadius = '3px'
-    this.tag.style.borderTopRightRadius = '3px'
-    document.body.appendChild(this.tag)
-  }
-
-  focus () {
-    this.element.style.backgroundColor = 'green'
-    this.element.style.color = 'white'
-  }
-
-  unfocus () {
-    this.element.style.backgroundColor = 'yellow'
-    this.element.style.color = 'black'
-  }
-
-  action (e) {
-    if (this.element.tagName === 'INPUT') {
-      this.element.focus()
-    } else {
+  handleKeyDown (e) {
+    if (e.key === 'Escape') {
+      this.hide()
+      return false
+    } else if (e.key === 'Tab') {
       if (e.shiftKey) {
-        var oldTarget = this.element.getAttribute('target')
-        this.element.setAttribute('target', '_blank')
-        this.element.click()
-        this.element.setAttribute('target', oldTarget)
+        this.elements.selectPreviousElement()
       } else {
-        this.element.click()
+        this.elements.selectNextElement()
       }
+      return false
+    } else if (e.key === 'Enter') {
+      var focused = this.focused()
+      if (focused) {
+        this.hide()
+        focused.action({shift: e.shiftKey})
+      }
+      return false
     }
-  }
-
-  destroy () {
-    this.element.setAttribute('style', this.oldStyle)
-    this.tag.remove()
   }
 }

@@ -1,7 +1,8 @@
-/* globals Element */
+/* globals NavverElement */
+
 window.NavigatorInput = class NavigatorInput {
   constructor (onKeyDown, onInput) {
-    this.container = Element.create('div')
+    this.container = NavverElement.create('div')
     this.container.style.zIndex = 100000
     this.container.style.position = 'fixed'
     this.container.style.bottom = '10px'
@@ -11,7 +12,7 @@ window.NavigatorInput = class NavigatorInput {
     this.container.style.backgroundColor = '#373b41'
     document.body.appendChild(this.container)
 
-    this.input = Element.create('input')
+    this.input = NavverElement.create('input')
     this.input.style.fontSize = '30px'
     this.input.style.marginTop = '10px'
     this.input.style.marginBottom = '10px'
