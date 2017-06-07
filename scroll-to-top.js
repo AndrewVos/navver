@@ -1,4 +1,4 @@
-class ScrollToTop {
+window.ScrollToTop = class ScrollToTop {
   key () {
     return 'gg'
   }

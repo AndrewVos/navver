@@ -1,4 +1,4 @@
-class ScrollDown {
+window.ScrollDown = class ScrollDown {
   key () {
     return 'j'
   }

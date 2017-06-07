@@ -1,5 +1,5 @@
 /* globals Reset */
-class NavigatorInput {
+window.NavigatorInput = class NavigatorInput {
   constructor (onKeyDown, onInput) {
     this.container = Reset.resetElement(document.createElement('div'))
     this.container.style.zIndex = 100000

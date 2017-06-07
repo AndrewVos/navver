@@ -1,6 +1,6 @@
 /* globals NavigatorInput, ElementFinder, LabelGenerator, Reset */
 
-class Navigator {
+window.Navigator = class Navigator {
   constructor (onHide) {
     this.onHide = onHide
     this.input = new NavigatorInput(
@@ -58,7 +58,7 @@ class Navigator {
       if (focused) {
         this.elements.destroy()
         this.hide()
-        focused.action()
+        focused.action(e)
       }
       return false
     }
@@ -177,11 +177,18 @@ class Match {
     this.element.style.color = 'black'
   }
 
-  action () {
+  action (e) {
     if (this.element.tagName === 'INPUT') {
       this.element.focus()
     } else {
-      this.element.click()
+      if (e.shiftKey) {
+        var oldTarget = this.element.getAttribute('target')
+        this.element.setAttribute('target', '_blank')
+        this.element.click()
+        this.element.setAttribute('target', oldTarget)
+      } else {
+        this.element.click()
+      }
     }
   }
 

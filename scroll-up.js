@@ -1,4 +1,4 @@
-class ScrollUp {
+window.ScrollUp = class ScrollUp {
   key () {
     return 'k'
   }

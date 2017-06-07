@@ -1,4 +1,4 @@
-class LabelGenerator {
+window.LabelGenerator = class LabelGenerator {
   constructor () {
     this.labels = this.generateLabels()
     this.index = 0

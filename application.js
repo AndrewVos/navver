@@ -1,5 +1,5 @@
 /* globals Navigator, ScrollUp, ScrollDown, ScrollToTop, ScrollToBottom */
-class Application {
+window.Application = class Application {
   constructor () {
     this.keysPressed = ''
 
@@ -63,5 +63,5 @@ class Application {
   }
 }
 
-var application = new Application()
+var application = new window.Application()
 window.addEventListener('keydown', application.handleKeyboardEvent.bind(application))

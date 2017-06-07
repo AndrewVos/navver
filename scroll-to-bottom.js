@@ -1,4 +1,4 @@
-class ScrollToBottom {
+window.ScrollToBottom = class ScrollToBottom {
   key () {
     return 'G'
   }

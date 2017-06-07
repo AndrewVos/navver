@@ -1,4 +1,4 @@
-class ElementFinder {
+window.ElementFinder = class ElementFinder {
   static all () {
     var elements = this.findClickableElements()
     var visibleElements = []

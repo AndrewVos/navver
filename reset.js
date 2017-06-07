@@ -1,4 +1,4 @@
-class Reset {
+window.Reset = class Reset {
   static resetElement (element) {
     element.style.margin = 0
     element.style.padding = 0
