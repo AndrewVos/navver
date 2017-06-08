@@ -15,7 +15,7 @@ window.Application = class Application {
   }
 
   handleKeyboardEvent (e) {
-    if (e.ctrlKey || this.insideInput(e)) {
+    if (e.ctrlKey || e.metaKey || this.insideInput(e)) {
       return
     }
 
