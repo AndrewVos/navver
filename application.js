@@ -1,4 +1,4 @@
-/* globals Navigator, ScrollUp, ScrollDown, ScrollToTop, ScrollToBottom */
+/* globals Navigator, ScrollUp, ScrollDown, ScrollLeft, ScrollRight, ScrollToTop, ScrollToBottom */
 window.Application = class Application {
   constructor () {
     this.keysPressed = ''
@@ -9,6 +9,8 @@ window.Application = class Application {
     this.shortcuts = [
       new ScrollUp(),
       new ScrollDown(),
+      new ScrollLeft(),
+      new ScrollRight(),
       new ScrollToTop(),
       new ScrollToBottom()
     ]

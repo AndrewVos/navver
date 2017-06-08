@@ -12,6 +12,7 @@ on the context.
 
 `Shift+Enter` will open in a new window.
 
-Use `k` and `j` to scroll up and down respectively.
+Use `k` and `j` to scroll up and down.
+Use `h` and `l` to scroll left and right.
 
 Use `gg` to scroll to the top of the page, and `G` to scroll to the bottom.
