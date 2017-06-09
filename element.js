@@ -126,13 +126,11 @@ window.Element = class Element {
 
   static allElements () {
     var labelGenerator = new LabelGenerator()
-    var tags = ['a', 'button', 'input']
+
+    var allElements = document.querySelectorAll('a, button, input')
     var elements = []
-    for (var i = 0; i < tags.length; i++) {
-      var elementsByTag = document.getElementsByTagName(tags[i])
-      for (var o = 0; o < elementsByTag.length; o++) {
-        elements.push(new Element(elementsByTag[o], labelGenerator.next()))
-      }
+    for (var i = 0; i < allElements.length; i++) {
+      elements.push(new Element(allElements[i], labelGenerator.next()))
     }
     return elements
   }
