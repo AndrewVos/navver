@@ -17,7 +17,7 @@ window.Application = class Application {
   }
 
   handleKeyboardEvent (e) {
-    if (e.ctrlKey || e.metaKey || this.insideInput(e)) {
+    if (e.ctrlKey || e.metaKey || this.insideInput(e) || this.insideContentEditable(e)) {
       return
     }
 
@@ -51,6 +51,13 @@ window.Application = class Application {
         shortcut.action()
         return true
       }
+    }
+    return false
+  }
+
+  insideContentEditable (e) {
+    if (e.srcElement.isContentEditable) {
+      return true
     }
     return false
   }
