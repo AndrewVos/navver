@@ -98,9 +98,9 @@ window.Navigator = class Navigator {
       return false
     } else if (e.key === 'Tab') {
       if (e.shiftKey) {
-        this.elements.selectPreviousElement()
+        this.selectPreviousElement()
       } else {
-        this.elements.selectNextElement()
+        this.selectNextElement()
       }
       return false
     } else if (e.key === 'Enter') {
