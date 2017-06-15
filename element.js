@@ -3,7 +3,6 @@
 window.Element = class Element {
   constructor (element, label) {
     this.element = element
-    this.label = label
     this.storeOldStyle()
   }
 
@@ -105,13 +104,19 @@ window.Element = class Element {
   static actionable () {
     var all = this.allElements()
     var valid = []
+    var labelGenerator = new LabelGenerator()
     for (var i = 0; i < all.length; i++) {
       var element = all[i]
       if (element.isActionable()) {
+        element.setLabel(labelGenerator.next())
         valid.push(element)
       }
     }
     return valid
+  }
+
+  setLabel(label) {
+    this.label = label
   }
 
   focus () {
@@ -125,12 +130,10 @@ window.Element = class Element {
   }
 
   static allElements () {
-    var labelGenerator = new LabelGenerator()
-
     var allElements = document.querySelectorAll('a, button, input')
     var elements = []
     for (var i = 0; i < allElements.length; i++) {
-      elements.push(new Element(allElements[i], labelGenerator.next()))
+      elements.push(new Element(allElements[i]))
     }
     return elements
   }
