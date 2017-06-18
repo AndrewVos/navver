@@ -1,8 +1,9 @@
-/* globals NavverElement, LabelGenerator */
+/* globals NavverElement, LabelGenerator, Offset */
 
 window.Element = class Element {
   constructor (element, label) {
     this.element = element
+    this.label = label
     this.storeOldStyle()
   }
 
@@ -11,19 +12,13 @@ window.Element = class Element {
     this.tag.remove()
   }
 
-  isActionable () {
-    return this.isVisible() &&
-      this.isScrolledIntoView() &&
-      !this.element.classList.contains('Navver')
-  }
-
-  isVisible () {
-    var rectangle = this.element.getBoundingClientRect()
+  static isVisible (element) {
+    var rectangle = element.getBoundingClientRect()
     if (rectangle.height <= 0 || rectangle.width <= 0) {
       return false
     }
 
-    var style = window.getComputedStyle(this.element)
+    var style = window.getComputedStyle(element)
     if (style.display === 'none') {
       return false
     }
@@ -31,14 +26,15 @@ window.Element = class Element {
     return true
   }
 
-  isScrolledIntoView () {
+  static isScrolledIntoView (element) {
     var viewportTop = document.body.scrollTop
     var viewportBottom = viewportTop + window.innerHeight
 
-    var height = this.element.clientHeight
-    var bottom = this.offset().top + height
+    var height = element.clientHeight
+    var elementOffset = Offset(element)
+    var bottom = elementOffset.top + height
 
-    return ((bottom <= viewportBottom) && (this.offset().top >= viewportTop))
+    return ((bottom <= viewportBottom) && (elementOffset.top >= viewportTop))
   }
 
   storeOldStyle () {
@@ -102,21 +98,17 @@ window.Element = class Element {
   }
 
   static actionable () {
-    var all = this.allElements()
+    var all = this.visibleElements()
     var valid = []
     var labelGenerator = new LabelGenerator()
     for (var i = 0; i < all.length; i++) {
-      var element = all[i]
-      if (element.isActionable()) {
-        element.setLabel(labelGenerator.next())
-        valid.push(element)
-      }
+      var element = new Element(
+        all[i],
+        labelGenerator.next()
+      )
+      valid.push(element)
     }
     return valid
-  }
-
-  setLabel(label) {
-    this.label = label
   }
 
   focus () {
@@ -129,12 +121,20 @@ window.Element = class Element {
     this.element.style.color = 'black'
   }
 
-  static allElements () {
+  static visibleElements () {
     var allElements = document.querySelectorAll('a, button, input')
-    var elements = []
+    var visible = []
     for (var i = 0; i < allElements.length; i++) {
-      elements.push(new Element(allElements[i]))
+      var element = allElements[i]
+      var isVisible =
+        Element.isVisible(element) &&
+        Element.isScrolledIntoView(element) &&
+        !element.classList.contains('Navver')
+
+      if (isVisible) {
+        visible.push(allElements[i])
+      }
     }
-    return elements
+    return visible
   }
 }

@@ -10,6 +10,7 @@
     {
       "matches": ["<all_urls>"],
       "js": [
+        "offset.js",
         "element.js",
         "navver-element.js",
         "label-generator.js",
