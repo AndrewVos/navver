@@ -24,6 +24,7 @@ window.Application = class Application {
     this.keysPressed += e.key
 
     if (this.executeNavigator() || this.executeShortcut()) {
+      e.stopPropagation()
       e.preventDefault()
       return false
     }

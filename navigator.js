@@ -93,22 +93,29 @@ window.Navigator = class Navigator {
   }
 
   handleKeyDown (e) {
+    var handled = false
+
     if (e.key === 'Escape') {
       this.hide()
-      return false
+      handled = true
     } else if (e.key === 'Tab') {
       if (e.shiftKey) {
         this.selectPreviousElement()
       } else {
         this.selectNextElement()
       }
-      return false
+      handled = true
     } else if (e.key === 'Enter') {
       var focused = this.focused()
       if (focused) {
         this.hide()
         focused.action({shift: e.shiftKey})
       }
+      handled = true
+    }
+
+    if (handled) {
+      e.stopPropagation()
       return false
     }
   }
