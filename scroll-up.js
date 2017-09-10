@@ -1,6 +1,6 @@
 window.ScrollUp = class ScrollUp {
-  key () {
-    return 'k'
+  keys () {
+    return ['k']
   }
 
   action () {

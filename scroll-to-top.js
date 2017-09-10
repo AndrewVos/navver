@@ -1,6 +1,6 @@
 window.ScrollToTop = class ScrollToTop {
-  key () {
-    return 'gg'
+  keys () {
+    return ['g', 'g']
   }
 
   action () {

@@ -1,6 +1,6 @@
 window.ScrollToBottom = class ScrollToBottom {
-  key () {
-    return 'G'
+  keys () {
+    return ['G']
   }
 
   action () {

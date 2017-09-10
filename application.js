@@ -1,7 +1,7 @@
 /* globals Navigator, ScrollUp, ScrollDown, ScrollLeft, ScrollRight, ScrollToTop, ScrollToBottom */
 window.Application = class Application {
   constructor () {
-    this.keysPressed = ''
+    this.keysPressed = []
 
     this.navigators = [
       Navigator
@@ -21,7 +21,7 @@ window.Application = class Application {
       return
     }
 
-    this.keysPressed += e.key
+    this.keysPressed.push(e.key)
 
     if (this.executeNavigator() || this.executeShortcut()) {
       e.stopPropagation()
@@ -34,7 +34,9 @@ window.Application = class Application {
     if (!this.navigator) {
       for (var i = 0; i < this.navigators.length; i++) {
         var Navigator = this.navigators[i]
-        if (this.endsWith(this.keysPressed, Navigator.activationKey())) {
+
+        if (this.arrayEndsWith(this.keysPressed, Navigator.activationKeys())) {
+          this.keysPressed = []
           this.currentNavigator = new Navigator(function () {
             this.currentNavigator = null
           }.bind(this))
@@ -47,8 +49,8 @@ window.Application = class Application {
   executeShortcut () {
     for (var i = 0; i < this.shortcuts.length; i++) {
       var shortcut = this.shortcuts[i]
-      if (this.endsWith(this.keysPressed, shortcut.key())) {
-        this.keysPressed = ''
+      if (this.arrayEndsWith(this.keysPressed, shortcut.keys())) {
+        this.keysPressed = []
         shortcut.action()
         return true
       }
@@ -68,8 +70,19 @@ window.Application = class Application {
       e.srcElement.tagName === 'TEXTAREA'
   }
 
-  endsWith (str, suffix) {
-    return str.indexOf(suffix, str.length - suffix.length) !== -1
+  arrayEndsWith (array, other) {
+    if (array.length < other.length) {
+      return false
+    }
+
+    var subset = array.slice(array.length - other.length)
+
+    for (var i = 0; i < subset.length; i++) {
+      if (subset[i] !== other[i]) {
+        return false
+      }
+    }
+    return true
   }
 }
 

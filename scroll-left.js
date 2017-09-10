@@ -1,6 +1,6 @@
 window.ScrollLeft = class ScrollDown {
-  key () {
-    return 'h'
+  keys () {
+    return ['h']
   }
 
   action () {

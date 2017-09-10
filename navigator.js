@@ -10,8 +10,8 @@ window.Navigator = class Navigator {
     this.search()
   }
 
-  static activationKey () {
-    return 'f'
+  static activationKeys () {
+    return ['f']
   }
 
   hide () {

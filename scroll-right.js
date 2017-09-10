@@ -1,6 +1,6 @@
 window.ScrollRight = class ScrollRight {
-  key () {
-    return 'l'
+  keys () {
+    return ['l']
   }
 
   action () {
