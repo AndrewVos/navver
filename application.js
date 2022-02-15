@@ -1,90 +1,166 @@
-/* globals Navigator, ScrollUp, ScrollDown, ScrollLeft, ScrollRight, ScrollToTop, ScrollToBottom */
 window.Application = class Application {
-  constructor () {
-    this.keysPressed = []
-
-    this.navigators = [
-      Navigator
-    ]
+  constructor() {
+    this.keysPressed = [];
+    this.elements = [];
     this.shortcuts = [
-      new ScrollUp(),
-      new ScrollDown(),
-      new ScrollLeft(),
-      new ScrollRight(),
-      new ScrollToTop(),
-      new ScrollToBottom()
-    ]
+      {
+        keys: () => "gb",
+        action: () => history.back(),
+      },
+      {
+        keys: () => "gf",
+        action: () => history.forward(),
+      },
+      {
+        keys: () => "k",
+        action: () => window.scrollBy(0, -50),
+      },
+      {
+        keys: () => "j",
+        action: () => window.scrollBy(0, 50),
+      },
+      {
+        keys: () => "h",
+        action: () => window.scrollBy(-50, 0),
+      },
+      {
+        keys: () => "l",
+        action: () => window.scrollBy(50, 0),
+      },
+      {
+        keys: () => "gg",
+        action: () => window.scrollTo(0, 0),
+      },
+      {
+        keys: () => "G",
+        action: () => window.scrollTo(0, document.body.scrollHeight),
+      },
+    ];
   }
 
-  handleKeyboardEvent (e) {
-    if (e.ctrlKey || e.metaKey || this.insideInput(e) || this.insideContentEditable(e)) {
-      return
+  handleKeyboardEvent = (e) => {
+    if (
+      e.ctrlKey ||
+      e.metaKey ||
+      this.isFocusInsideInput(e) ||
+      this.isFocusInsideContentEditable(e)
+    ) {
+      return;
     }
 
-    this.keysPressed.push(e.key)
+    if (this.navigatorVisible) {
+      if (e.key === "Escape") {
+        this.hideNavigator();
+      } else if (e.key === "Backspace") {
+        this.keysPressed.pop();
+        this.search();
+        this.maybeFocusSingleElement();
+      } else if (this.isKeyLetter(e)) {
+        this.keysPressed.push(e.key);
+        this.search();
+        this.maybeFocusSingleElement();
+      }
+      e.stopPropagation();
+      e.preventDefault();
+      return false;
+    } else {
+      this.keysPressed.push(e.key);
 
-    if (this.executeNavigator() || this.executeShortcut()) {
-      e.stopPropagation()
-      e.preventDefault()
-      return false
-    }
-  }
-
-  executeNavigator () {
-    if (!this.navigator) {
-      for (var i = 0; i < this.navigators.length; i++) {
-        var Navigator = this.navigators[i]
-
-        if (this.arrayEndsWith(this.keysPressed, Navigator.activationKeys())) {
-          this.keysPressed = []
-          this.currentNavigator = new Navigator(function () {
-            this.currentNavigator = null
-          }.bind(this))
-          return true
-        }
+      if (this.maybeExecuteShortcut() || this.maybeShowNavigator()) {
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
       }
     }
-  }
+  };
 
-  executeShortcut () {
+  handleScroll = () => {
+    if (this.navigatorVisible) {
+      this.hideNavigator();
+    }
+  };
+
+  maybeShowNavigator = () => {
+    if (this.keysPressedEndsWith("f")) {
+      this.showNavigator();
+      return true;
+    }
+  };
+
+  maybeFocusSingleElement = () => {
+    if (this.elements.length === 1) {
+      this.elements[0].focus();
+      this.hideNavigator();
+    }
+  };
+
+  isKeyLetter = (event) => {
+    const key = event.key.toLowerCase();
+
+    if (key.length !== 1) {
+      return false;
+    }
+    return key >= "a" && key <= "z";
+  };
+
+  maybeExecuteShortcut = () => {
     for (var i = 0; i < this.shortcuts.length; i++) {
-      var shortcut = this.shortcuts[i]
-      if (this.arrayEndsWith(this.keysPressed, shortcut.keys())) {
-        this.keysPressed = []
-        shortcut.action()
-        return true
+      var shortcut = this.shortcuts[i];
+      if (this.keysPressedEndsWith(shortcut.keys())) {
+        this.keysPressed = [];
+        shortcut.action();
+        return true;
       }
     }
-    return false
-  }
+    return false;
+  };
 
-  insideContentEditable (e) {
+  showNavigator = () => {
+    this.keysPressed = [];
+    this.search();
+    this.navigatorVisible = true;
+  };
+
+  hideNavigator = () => {
+    this.keysPressed = [];
+    this.navigatorVisible = false;
+    this.hideElements();
+  };
+
+  isFocusInsideContentEditable = (e) => {
     if (e.srcElement.isContentEditable) {
-      return true
+      return true;
     }
-    return false
-  }
+    return false;
+  };
 
-  insideInput (e) {
-    return e.srcElement.tagName === 'INPUT' ||
-      e.srcElement.tagName === 'TEXTAREA'
-  }
+  isFocusInsideInput = (e) => {
+    return (
+      e.srcElement.tagName === "INPUT" || e.srcElement.tagName === "TEXTAREA"
+    );
+  };
 
-  arrayEndsWith (array, other) {
-    if (array.length < other.length) {
-      return false
+  keysPressedEndsWith = (s) => {
+    return this.keysPressed.join("").endsWith(s);
+  };
+
+  search = () => {
+    const query = this.keysPressed.join("");
+
+    this.hideElements();
+
+    this.elements = Element.findElements(query);
+    this.elements.forEach((e) => e.show());
+  };
+
+  hideElements() {
+    if (this.elements) {
+      this.elements.forEach((e) => e.hide());
     }
-
-    var subset = array.slice(array.length - other.length)
-
-    for (var i = 0; i < subset.length; i++) {
-      if (subset[i] !== other[i]) {
-        return false
-      }
-    }
-    return true
+    this.elements = [];
   }
-}
+};
 
-var application = new window.Application()
-window.addEventListener('keydown', application.handleKeyboardEvent.bind(application))
+var application = new window.Application();
+window.addEventListener("keydown", application.handleKeyboardEvent);
+window.addEventListener("scroll", application.handleScroll);
