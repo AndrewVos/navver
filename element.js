@@ -27,7 +27,7 @@ window.Element = class Element {
 
       position: "absolute",
 
-      zIndex: 10000,
+      zIndex: 999999999999999999,
 
       paddingLeft: "2px",
       paddingRight: "2px",
