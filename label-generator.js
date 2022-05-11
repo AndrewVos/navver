@@ -11,7 +11,7 @@ window.LabelGenerator = class LabelGenerator {
   }
 
   generateLabels() {
-    var characters = "abcdefghijklmnopqrstuvwxyz";
+    var characters = "abcdefhijklmnoprstuvwxyz";
     var labels = [];
     for (var i = 0; i < characters.length; i++) {
       for (var p = 0; p < characters.length; p++) {
